@@ -11,11 +11,14 @@ public class PlayerMoveScript : MonoBehaviour {
 	public float MaxSpeed = 4.0f;
 	//前進するための力
 	public float Speed = 0.0f;
-	//転回するための力
-	public float TurnAngle  = 0.0f;
+	//プレイヤー移動許可フラク
+	public bool moveable;
 
 	// Use this for initialization
 	void Start () {
+		//プレイヤー移動可能
+		moveable = true;
+
 		//アニメータコンポーネントを取得
 		this.myAnimator = GetComponent<Animator>();
 
@@ -25,9 +28,9 @@ public class PlayerMoveScript : MonoBehaviour {
 
 	// Update is called once per frame
 	void FixedUpdate () {
-		if (!this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Attack")) {
+		//プレイヤー移可能を確認
+		if (moveable) {
 			walk ();
-			turn ();
 		}
 	}
 
@@ -44,13 +47,10 @@ public class PlayerMoveScript : MonoBehaviour {
 		this.myAnimator.speed = (Speed == 0) ? 1 : this.Speed / this.MaxSpeed;
 	}
 
-	public void turn()
+	public void turn(float angle)
 	{
-		//		float turn = TurnSpeed * Time.deltaTime;
-		//
-		//		Quaternion turnRotation = Quaternion.Euler (0f, TurnSpeed, 0f);
-		//		myRigidbody.MoveRotation (myRigidbody.rotation * turnRotation);
-		transform.rotation = Quaternion.Euler(transform.rotation.x, TurnAngle, transform.rotation.z);
-		//transform.Rotate (transform.rotation.x, TurnSpeed, transform.rotation.z);
+		if (moveable) {
+			transform.rotation = Quaternion.Euler(transform.rotation.x, angle, transform.rotation.z);
+		}
 	}
 }
