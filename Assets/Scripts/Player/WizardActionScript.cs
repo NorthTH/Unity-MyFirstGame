@@ -51,7 +51,7 @@ public class WizardActionScript : MonoBehaviour {
 		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Attack"))
 		{
 			//Debug.Log (this.myAnimator.GetCurrentAnimatorStateInfo (0).normalizedTime);
-			if(this.myAnimator.GetCurrentAnimatorStateInfo (0).normalizedTime >= 0.95f)
+			if(this.myAnimator.GetCurrentAnimatorStateInfo (0).normalizedTime >= 0.90f)
 			{
 				GetComponent<PlayerMoveScript> ().moveable = true;
 			}

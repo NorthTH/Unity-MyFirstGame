@@ -8,6 +8,8 @@ public class KnightActionScript : MonoBehaviour {
 
 	private float Range = 5.0f;
 
+	public bool IsAttacking;
+
 	public GameObject Slash;
 
 	public Transform SlashSpawn;
@@ -16,11 +18,13 @@ public class KnightActionScript : MonoBehaviour {
 	void Start () {
 		//アニメータコンポーネントを取得
 		this.myAnimator = GetComponent<Animator>();
+
+		IsAttacking = false;
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		SetAttackEnd ();
+		AttackStart ();
 		AttackEnd ();
 	}
 
@@ -34,32 +38,33 @@ public class KnightActionScript : MonoBehaviour {
 			if (findNearEnemy () != null) {
 				this.transform.LookAt (findNearEnemy ().transform);
 			}
-
-			Instantiate (Slash, SlashSpawn.position, SlashSpawn.rotation);
 		}
 	}
 
-	//攻撃フラクリセット
-	private void SetAttackEnd(){
+	//攻撃中確認
+	public bool isAttacking(){
+		return IsAttacking;
+	}
+
+	//攻撃スタート
+	private void AttackStart(){
 		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Attack")) {
+			IsAttacking = true;
+			if (this.myAnimator.GetBool ("IsAttack"))
+				Instantiate (Slash, SlashSpawn.position, SlashSpawn.rotation);
 			this.myAnimator.SetBool ("IsAttack", false);
 		}
 	}
 
-	//攻撃終了確認
-	public bool isAttackEnd(){
-		return (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Attack") &&
-		this.myAnimator.GetCurrentAnimatorStateInfo (0).normalizedTime >= 1.0f) ? true : false;
-	}
-
-	//攻撃終了時
+	//攻撃終了
 	private void AttackEnd(){
 		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Attack"))
 		{
 			//Debug.Log (this.myAnimator.GetCurrentAnimatorStateInfo (0).normalizedTime);
-			if(this.myAnimator.GetCurrentAnimatorStateInfo (0).normalizedTime >= 0.95f)
+			if(this.myAnimator.GetCurrentAnimatorStateInfo (0).normalizedTime >= 0.90f)
 			{
 				GetComponent<PlayerMoveScript> ().moveable = true;
+				IsAttacking = false;
 			}
 		}
 	}
