@@ -6,17 +6,29 @@ public class WizardActionScript : MonoBehaviour {
 	//アニメーションするためのコンポーネントを入れる
 	private Animator myAnimator;
 
+	private PlayerMoveScript PlayerMove;
+
 	private float Range = 7.0f;
+
+	public bool IsAttacking;
+
+	public GameObject Fireblot;
+
+	public Transform FireblotSpawn;
 
 	// Use this for initialization
 	void Start () {
 		//アニメータコンポーネントを取得
 		this.myAnimator = GetComponent<Animator>();
+
+		this.PlayerMove = GetComponent<PlayerMoveScript> ();
+
+		IsAttacking = false;
 	}
 
 	// Update is called once per frame
 	void FixedUpdate () {
-		SetAttackEnd ();
+		AttackStart ();
 		AttackEnd ();
 	}
 
@@ -25,7 +37,7 @@ public class WizardActionScript : MonoBehaviour {
 		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Idle")
 			|| this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Walk")) {
 			this.myAnimator.SetBool ("IsAttack", true);
-			GetComponent<PlayerMoveScript> ().moveable = false;
+			this.PlayerMove.moveable = false;
 
 			if (findNearEnemy () != null) {
 				this.transform.LookAt (findNearEnemy ().transform);
@@ -33,27 +45,35 @@ public class WizardActionScript : MonoBehaviour {
 		}
 	}
 
-	//攻撃フラクリセット
-	public void SetAttackEnd(){
+	private void CallFireblot()
+	{
+		Instantiate (Fireblot, FireblotSpawn.position, FireblotSpawn.rotation);
+	}
+
+	//攻撃中確認
+	public bool isAttacking(){
+		return IsAttacking;
+	}
+
+	//攻撃スタート
+	private void AttackStart(){
 		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Attack")) {
+			IsAttacking = true;
+			if (this.myAnimator.GetBool ("IsAttack")) 
+				Invoke("CallFireblot", 0.4f);
 			this.myAnimator.SetBool ("IsAttack", false);
 		}
 	}
 
-	//攻撃終了確認
-	public bool isAttackEnd(){
-		return (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Attack") &&
-			this.myAnimator.GetCurrentAnimatorStateInfo (0).normalizedTime >= 1.0f) ? true : false;
-	}
-
-	//攻撃終了時
-	public void AttackEnd(){
+	//攻撃終了
+	private void AttackEnd(){
 		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Attack"))
 		{
 			//Debug.Log (this.myAnimator.GetCurrentAnimatorStateInfo (0).normalizedTime);
 			if(this.myAnimator.GetCurrentAnimatorStateInfo (0).normalizedTime >= 0.90f)
 			{
-				GetComponent<PlayerMoveScript> ().moveable = true;
+				this.PlayerMove.moveable = true;
+				IsAttacking = false;
 			}
 		}
 	}

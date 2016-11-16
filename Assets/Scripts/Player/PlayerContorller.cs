@@ -17,19 +17,35 @@ public class PlayerContorller : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		this.Player = GameObject.FindGameObjectWithTag ("Player" + PlayerNumber);
+		setToPlayer (PlayerNumber);
 		//clickTime = 0.0f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if( Input.GetMouseButtonDown(0) ) BeginClick();
-		if( Input.GetMouseButtonUp(0) ) EndClick();
-		if( Input.GetMouseButton(0) ) TrackingClick();
+			if (Input.GetMouseButtonDown (0))
+				BeginClick ();
+			if (Input.GetMouseButtonUp (0))
+				EndClick ();
+			if (Input.GetMouseButton (0))
+				TrackingClick ();
 	}
 
 	public void setToPlayer(int No){
-		this.Player = GameObject.FindGameObjectWithTag ("Player" + No);
+		switch (No) {
+		case 1:
+			this.Player = GameObject.Find ("Knight");
+			PlayerNumber = 1;
+			break;
+		case 2:
+			this.Player = GameObject.Find ("Wizard");
+			PlayerNumber = 2;
+			break;
+		default:
+			this.Player = GameObject.Find ("Knight");
+			PlayerNumber = 1;
+			break;
+		}
 	}
 
 	private void BeginClick(){
@@ -43,11 +59,11 @@ public class PlayerContorller : MonoBehaviour {
 
 		//ドラックがしないこと確認し攻撃行う。
 		if (distance == 0.0f) {
-			switch (this.Player.tag) {
-			case "Player1":
+			switch (PlayerNumber) {
+			case 1:
 				Player.GetComponent<KnightActionScript> ().Attack ();
 				break;
-			case "Player2":
+			case 2:
 				Player.GetComponent<WizardActionScript> ().Attack ();
 				break;
 			}

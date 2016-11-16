@@ -9,7 +9,7 @@ public class ThirdPersonCamera : MonoBehaviour {
 	Vector3 offset;
 
 	void Start() {
-		this.Player = GameObject.FindGameObjectWithTag ("Player" + PlayerNumber);
+		setToPlayer (PlayerNumber);
 		transform.position = new Vector3 (Player.transform.position.x, transform.position.y, transform.position.z);
 		offset = Player.transform.position - transform.position;
 	}
@@ -26,6 +26,19 @@ public class ThirdPersonCamera : MonoBehaviour {
 	}
 
 	public void setToPlayer(int No){
-		this.Player = GameObject.FindGameObjectWithTag ("Player" + No);
+		switch (No) {
+		case 1:
+			this.Player = GameObject.Find ("Knight");
+			PlayerNumber = 1;
+			break;
+		case 2:
+			this.Player = GameObject.Find ("Wizard");
+			PlayerNumber = 2;
+			break;
+		default:
+			this.Player = GameObject.Find ("Knight");
+			PlayerNumber = 1;
+			break;
+		}
 	}
 }

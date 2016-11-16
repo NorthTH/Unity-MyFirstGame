@@ -6,6 +6,8 @@ public class KnightActionScript : MonoBehaviour {
 	//アニメーションするためのコンポーネントを入れる
 	private Animator myAnimator;
 
+	private PlayerMoveScript PlayerMove;
+
 	private float Range = 5.0f;
 
 	public bool IsAttacking;
@@ -18,6 +20,8 @@ public class KnightActionScript : MonoBehaviour {
 	void Start () {
 		//アニメータコンポーネントを取得
 		this.myAnimator = GetComponent<Animator>();
+
+		this.PlayerMove = GetComponent<PlayerMoveScript> ();
 
 		IsAttacking = false;
 	}
@@ -33,12 +37,17 @@ public class KnightActionScript : MonoBehaviour {
 		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Idle")
 		    || this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Walk")) {
 			this.myAnimator.SetBool ("IsAttack", true);
-			GetComponent<PlayerMoveScript> ().moveable = false;
+			this.PlayerMove.moveable = false;
 
 			if (findNearEnemy () != null) {
 				this.transform.LookAt (findNearEnemy ().transform);
 			}
 		}
+	}
+
+	private void CallSlash()
+	{
+		Instantiate (Slash, SlashSpawn.position, SlashSpawn.rotation);
 	}
 
 	//攻撃中確認
@@ -51,7 +60,7 @@ public class KnightActionScript : MonoBehaviour {
 		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Attack")) {
 			IsAttacking = true;
 			if (this.myAnimator.GetBool ("IsAttack"))
-				Instantiate (Slash, SlashSpawn.position, SlashSpawn.rotation);
+				Invoke("CallSlash", 0.0f);
 			this.myAnimator.SetBool ("IsAttack", false);
 		}
 	}
@@ -63,7 +72,7 @@ public class KnightActionScript : MonoBehaviour {
 			//Debug.Log (this.myAnimator.GetCurrentAnimatorStateInfo (0).normalizedTime);
 			if(this.myAnimator.GetCurrentAnimatorStateInfo (0).normalizedTime >= 0.90f)
 			{
-				GetComponent<PlayerMoveScript> ().moveable = true;
+				this.PlayerMove.moveable = true;
 				IsAttacking = false;
 			}
 		}
