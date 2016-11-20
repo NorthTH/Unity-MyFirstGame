@@ -15,14 +15,16 @@ public class ThirdPersonCamera : MonoBehaviour {
 	}
 
 	void LateUpdate() {
-		float currentAngle = transform.eulerAngles.y;
-		float desiredAngle = Player.transform.eulerAngles.y;
-		float angle = Mathf.LerpAngle(currentAngle, desiredAngle, Time.deltaTime * damping);
+		if (Player != null) {
+			float currentAngle = transform.eulerAngles.y;
+			float desiredAngle = Player.transform.eulerAngles.y;
+			float angle = Mathf.LerpAngle (currentAngle, desiredAngle, Time.deltaTime * damping);
 
-		Quaternion rotation = Quaternion.Euler(0, angle, 0);
-		transform.position = Player.transform.position - (rotation * offset);
+			Quaternion rotation = Quaternion.Euler (0, angle, 0);
+			transform.position = Player.transform.position - (rotation * offset);
 
-		transform.LookAt(Player.transform);
+			transform.LookAt (Player.transform);
+		}
 	}
 
 	public void setToPlayer(int No){

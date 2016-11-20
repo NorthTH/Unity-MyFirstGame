@@ -7,6 +7,8 @@ public class FireboltScript : MonoBehaviour {
 
 	public float lifetime;
 
+	public int Damage;
+
 	public GameObject FireboltExpo; 
 
 	// Use this for initialization
@@ -23,7 +25,9 @@ public class FireboltScript : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other){
 		if (other.tag == ("Enemy")) {
-			Instantiate (FireboltExpo, transform.position, transform.rotation);
+			
+			GameObject FireblotExpoObject = (GameObject) Instantiate (FireboltExpo, transform.position, transform.rotation);
+			FireblotExpoObject.transform.GetComponent<DamageScript> ().Damage = Damage;
 			Destroy (this.gameObject);
 		}
 	}

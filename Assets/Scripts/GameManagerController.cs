@@ -12,7 +12,20 @@ public class GameManagerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Camera.GetComponent<ThirdPersonCamera> ().setToPlayer (PlayerNo);
-		Controller.GetComponent<PlayerContorller> ().setToPlayer (PlayerNo);
+		if (checkPlayer ()) {
+			Camera.GetComponent<ThirdPersonCamera> ().setToPlayer (PlayerNo);
+			Controller.GetComponent<PlayerContorller> ().setToPlayer (PlayerNo);
+		} 
+		else {
+			
+		}
+	}
+
+	bool checkPlayer()
+	{
+		if (GameObject.FindGameObjectsWithTag ("Player") != null)
+			return true;
+		else
+			return false;
 	}
 }

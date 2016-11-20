@@ -12,9 +12,11 @@ public class StatusScript : MonoBehaviour {
 
 	public int HP;
 
-	private int MP;
+	public int MP;
 
 	public bool IsDamaged;
+
+
 
 	private bool isDead;
 
@@ -46,7 +48,19 @@ public class StatusScript : MonoBehaviour {
 	public void GetDamage(int damage)
 	{
 		HP -= damage;
+		Invoke ("showHP", 0.0f);
 		HealthBar.fillAmount = (float)HP / (float)MaxHP;
+		Invoke ("hideHP", 2.0f);
+	}
+
+	void showHP()
+	{
+		StatusCanvas.enabled = true;
+	}
+
+	void hideHP()
+	{
+		StatusCanvas.enabled = false;
 	}
 
 	public void Damage()
@@ -77,9 +91,10 @@ public class StatusScript : MonoBehaviour {
 	private void Die(){
 		isDead = true;
 		myAnimator.SetTrigger ("IsDead");
-		if (gameObject.tag == "Player")
-			this.GetComponent<PlayerMoveScript>().moveable = false;
-		if (gameObject.tag == "Enemy")
-			Destroy (gameObject, 1.0f);
+		//未使用
+//		if (gameObject.tag == "Player")
+//			this.GetComponent<PlayerMoveScript>().moveable = false;
+//		if (gameObject.tag == "Enemy")
+			Destroy (gameObject, 1.5f);
 	}
 }

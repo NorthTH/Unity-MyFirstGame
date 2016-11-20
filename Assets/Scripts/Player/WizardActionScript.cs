@@ -10,7 +10,11 @@ public class WizardActionScript : MonoBehaviour {
 
 	private float Range = 7.0f;
 
+	private StatusScript Status;
+
 	public bool IsAttacking;
+
+	public bool IsCharge;
 
 	public GameObject Fireblot;
 
@@ -20,6 +24,8 @@ public class WizardActionScript : MonoBehaviour {
 	void Start () {
 		//アニメータコンポーネントを取得
 		this.myAnimator = GetComponent<Animator>();
+
+		this.Status = GetComponent<StatusScript> ();
 
 		this.PlayerMove = GetComponent<PlayerMoveScript> ();
 
@@ -39,15 +45,17 @@ public class WizardActionScript : MonoBehaviour {
 			this.myAnimator.SetBool ("IsAttack", true);
 			this.PlayerMove.moveable = false;
 
-			if (findNearEnemy () != null) {
-				this.transform.LookAt (findNearEnemy ().transform);
+			GameObject nearestObject = SearchObject.GetClosetTagObject (this.transform, "Enemy", Range);
+			if (nearestObject != null) {
+				this.transform.LookAt (nearestObject.transform);
 			}
 		}
 	}
 
 	private void CallFireblot()
 	{
-		Instantiate (Fireblot, FireblotSpawn.position, FireblotSpawn.rotation);
+		GameObject FireblotObject = (GameObject) Instantiate (Fireblot, FireblotSpawn.position, FireblotSpawn.rotation);
+		FireblotObject.GetComponent<FireboltScript> ().Damage = Status.Attack;
 	}
 
 	//攻撃中確認
@@ -76,20 +84,5 @@ public class WizardActionScript : MonoBehaviour {
 				IsAttacking = false;
 			}
 		}
-	}
-
-	private GameObject findNearEnemy(){
-		GameObject nearestEnemy = null;
-		float minDis = Range;
-		GameObject[] enemys = GameObject.FindGameObjectsWithTag ("Enemy");
-		foreach (GameObject enemy in enemys) {
-			float dis = Vector3.Distance (transform.position, enemy.transform.position);
-			//if( dis<=Range && dis<minDis)/ && enemy.GetComponent<Enemy>().hp>0 )
-			if (dis <= Range && dis < minDis) {
-				minDis = dis;
-				nearestEnemy = enemy;
-			}
-		}
-		return nearestEnemy;
 	}
 }
