@@ -20,6 +20,12 @@ public class WizardActionScript : MonoBehaviour {
 
 	public Transform FireblotSpawn;
 
+	public bool AutoAtk;
+
+	private float timer;
+
+	public float atkSpeed = 1.0f;
+
 	// Use this for initialization
 	void Start () {
 		//アニメータコンポーネントを取得
@@ -36,6 +42,8 @@ public class WizardActionScript : MonoBehaviour {
 	void FixedUpdate () {
 		AttackStart ();
 		AttackEnd ();
+		if (AutoAtk)
+			AutoAttack ();
 	}
 
 	//攻撃実行
@@ -55,7 +63,8 @@ public class WizardActionScript : MonoBehaviour {
 	private void CallFireblot()
 	{
 		GameObject FireblotObject = (GameObject) Instantiate (Fireblot, FireblotSpawn.position, FireblotSpawn.rotation);
-		FireblotObject.GetComponent<FireboltScript> ().Damage = Status.Attack;
+		FireblotObject.GetComponent<DamageScript> ().BelongTo = this.gameObject;
+		FireblotObject.GetComponent<DamageScript> ().Damage = Status.Attack;
 	}
 
 	//攻撃中確認
@@ -82,6 +91,19 @@ public class WizardActionScript : MonoBehaviour {
 			{
 				this.PlayerMove.moveable = true;
 				IsAttacking = false;
+			}
+		}
+	}
+
+	private void AutoAttack()
+	{
+		GameObject Enemy = GetComponent<PlayerMoveScript> ().Enemy;
+		if (Enemy != null && SearchObject.CheckObjectinRange (this.transform, Enemy.transform, 5.0f)) {
+			timer += Time.deltaTime;
+			if (timer > atkSpeed) {
+				timer = 0;
+				this.transform.LookAt (Enemy.transform);
+				Attack ();
 			}
 		}
 	}

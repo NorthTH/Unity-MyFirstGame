@@ -24,20 +24,21 @@ public class StatusController : MonoBehaviour {
 
 	void updateStatus()
 	{
-		int hp = Player.GetComponent<StatusScript> ().HP;
-		int maxHp = Player.GetComponent<StatusScript> ().MaxHP;
-		int mp = Player.GetComponent<StatusScript> ().MP;
-		int maxMp = Player.GetComponent<StatusScript> ().MaxMP;
+		if (Player != null) {
+			int hp = Player.GetComponent<StatusScript> ().HP;
+			int maxHp = Player.GetComponent<StatusScript> ().MaxHP;
+			int mp = Player.GetComponent<StatusScript> ().MP;
+			int maxMp = Player.GetComponent<StatusScript> ().MaxMP;
 
-		Image iHP = HPBar.GetComponent<Image> ();
-		iHP.fillAmount = (float)hp / (float)maxHp;
-		Text tHP = HPText.GetComponent<Text> ();
-		tHP.text = "HP : " + hp +"/" + maxHp;
+			Image iHP = HPBar.GetComponent<Image> ();
+			iHP.fillAmount = (float)hp / (float)maxHp;
+			Text tHP = HPText.GetComponent<Text> ();
+			tHP.text = "HP : " + hp + "/" + maxHp;
 
-		Image iMP = MPBar.GetComponent<Image> ();
-		iMP.fillAmount = (float)mp / (float)maxMp;
-		Text tMP = MPText.GetComponent<Text> ();
-		tMP.text = "MP : " + mp +"/" + maxMp;
-
+			Image iMP = MPBar.GetComponent<Image> ();
+			iMP.fillAmount = (float)mp / (float)maxMp;
+			Text tMP = MPText.GetComponent<Text> ();
+			tMP.text = "MP : " + mp + "/" + maxMp;
+		}
 	}
 }

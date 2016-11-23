@@ -18,6 +18,12 @@ public class KnightActionScript : MonoBehaviour {
 
 	public Transform SlashSpawn;
 
+	public bool AutoAtk;
+
+	private float timer;
+
+	public float atkSpeed = 1.0f;
+
 	// Use this for initialization
 	void Start () {
 		//アニメータコンポーネントを取得
@@ -28,12 +34,16 @@ public class KnightActionScript : MonoBehaviour {
 		this.PlayerMove = GetComponent<PlayerMoveScript> ();
 
 		IsAttacking = false;
+
+		timer = 0;
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 		AttackStart ();
 		AttackEnd ();
+		if (AutoAtk)
+			AutoAttack ();
 	}
 
 	//攻撃実行
@@ -81,6 +91,19 @@ public class KnightActionScript : MonoBehaviour {
 			{
 				this.PlayerMove.moveable = true;
 				IsAttacking = false;
+			}
+		}
+	}
+
+	private void AutoAttack()
+	{
+		GameObject Enemy = GetComponent<PlayerMoveScript> ().Enemy;
+		if (Enemy != null && SearchObject.CheckObjectinRange (this.transform, Enemy.transform, 1.0f)) {
+			timer += Time.deltaTime;
+			if (timer > atkSpeed) {
+				timer = 0;
+				this.transform.LookAt (Enemy.transform);
+				Attack ();
 			}
 		}
 	}

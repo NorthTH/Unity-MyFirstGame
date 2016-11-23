@@ -48,6 +48,7 @@ public class StatusScript : MonoBehaviour {
 	public void GetDamage(int damage)
 	{
 		HP -= damage;
+		HP = (HP < 0) ? 0 : HP;
 		Invoke ("showHP", 0.0f);
 		HealthBar.fillAmount = (float)HP / (float)MaxHP;
 		Invoke ("hideHP", 2.0f);

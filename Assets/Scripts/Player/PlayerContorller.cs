@@ -22,7 +22,7 @@ public class PlayerContorller : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void LateUpdate () {
+	void Update () {
 			if (Input.GetMouseButtonDown (0))
 				BeginClick ();
 			if (Input.GetMouseButtonUp (0))

@@ -14,6 +14,26 @@ public class PlayerMoveScript : MonoBehaviour {
 	//プレイヤー移動許可フラク
 	public bool moveable;
 
+	public bool AIMode;
+
+	public GameObject FollowPlayer;               // Reference to the player's position.
+	StatusScript TargetPlayerHP;      // Reference to the player's health.
+	StatusScript ThisPlayerHP;      
+	public float Range;
+
+	public GameObject Enemy;
+	StatusScript enemyHP;        // Reference to this enemy's health.
+	public float SearchRange;
+	public float StopRange;
+
+	NavMeshAgent nav;               // Reference to the nav mesh agent.
+
+	void Awake ()
+	{
+		nav = GetComponent <NavMeshAgent> ();
+		ThisPlayerHP = GetComponent <StatusScript> ();
+	}
+
 	// Use this for initialization
 	void Start () {
 		//プレイヤー移動可能
@@ -28,10 +48,26 @@ public class PlayerMoveScript : MonoBehaviour {
 
 	// Update is called once per frame
 	void FixedUpdate () {
+		idleIni ();
 		//プレイヤー移可能を確認
 		if (moveable) {
-			walk ();
+			if (!AIMode)
+				walk ();
+			else {
+				findEnemy ();
+				if (Enemy == null || !CheckPlayerInRange ())
+					moveToPlayer ();
+				else
+					moveToEnemy ();
+			}
 		}
+	}
+
+	private void idleIni()
+	{
+		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Idle")
+		    || this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Walk"))
+			moveable = true;
 	}
 
 	private void walk()
@@ -51,6 +87,51 @@ public class PlayerMoveScript : MonoBehaviour {
 	{
 		if (moveable) {
 			transform.rotation = Quaternion.Euler(transform.rotation.x, angle, transform.rotation.z);
+		}
+	}
+
+	void moveToPlayer()
+	{
+		if (FollowPlayer != null && ThisPlayerHP.HP >0) {
+			TargetPlayerHP = FollowPlayer.GetComponent <StatusScript> ();
+			if (!SearchObject.CheckObjectinRange (this.transform, FollowPlayer.transform, Range)) {
+				nav.enabled = true;
+				myAnimator.SetFloat ("Speed", 1);
+				nav.SetDestination (FollowPlayer.transform.position);
+			} else {
+				myAnimator.SetFloat ("Speed", 0);
+				nav.enabled = false;
+			}
+		} else {
+			myAnimator.SetFloat ("Speed", 0);
+			nav.enabled = false;
+		}
+	}
+
+	private bool CheckPlayerInRange()
+	{
+		return SearchObject.CheckObjectinRange (this.transform, FollowPlayer.transform, Range);
+	}
+
+	void moveToEnemy()
+	{
+		enemyHP = Enemy.GetComponent <StatusScript> ();
+		if (!SearchObject.CheckObjectinRange (this.transform, Enemy.transform, StopRange) && ThisPlayerHP.HP > 0 && enemyHP.HP > 0) {
+			nav.enabled = true;
+			myAnimator.SetFloat ("Speed", 1);
+			nav.SetDestination (Enemy.transform.position);
+		} else {
+			myAnimator.SetFloat ("Speed", 0);
+			nav.enabled = false;
+		}
+	}
+
+	void findEnemy()
+	{
+		if (Enemy == null) {
+			Enemy = SearchObject.GetClosestObject (FollowPlayer, GameObject.FindGameObjectsWithTag ("Enemy"), SearchRange);
+		} else {
+			Enemy = (SearchObject.CheckObjectinRange (FollowPlayer.transform, Enemy.transform, SearchRange)) ? Enemy : null;
 		}
 	}
 }
