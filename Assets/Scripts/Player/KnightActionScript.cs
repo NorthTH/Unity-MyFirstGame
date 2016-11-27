@@ -55,7 +55,10 @@ public class KnightActionScript : MonoBehaviour {
 
 			GameObject nearestObject = SearchObject.GetClosetTagObject (this.transform, "Enemy", Range);
 			if (nearestObject != null) {
-				this.transform.LookAt (nearestObject.transform);
+				Vector3 targetPostition = new Vector3( nearestObject.transform.position.x, 
+					this.transform.position.y, 
+					nearestObject.transform.position.z ) ;
+				this.transform.LookAt (targetPostition);
 			}
 		}
 	}
@@ -98,11 +101,11 @@ public class KnightActionScript : MonoBehaviour {
 	private void AutoAttack()
 	{
 		GameObject Enemy = GetComponent<PlayerMoveScript> ().Enemy;
-		if (Enemy != null && SearchObject.CheckObjectinRange (this.transform, Enemy.transform, 1.0f)) {
+		if (Enemy != null && SearchObject.CheckObjectinRange (this.transform, Enemy.transform, 1.5f)) {
 			timer += Time.deltaTime;
 			if (timer > atkSpeed) {
 				timer = 0;
-				this.transform.LookAt (Enemy.transform);
+				//this.transform.LookAt (Enemy.transform);
 				Attack ();
 			}
 		}

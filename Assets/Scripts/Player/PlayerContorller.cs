@@ -23,12 +23,14 @@ public class PlayerContorller : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (Player != null) {
 			if (Input.GetMouseButtonDown (0))
 				BeginClick ();
 			if (Input.GetMouseButtonUp (0))
 				EndClick ();
 			if (Input.GetMouseButton (0))
 				TrackingClick ();
+		}
 	}
 
 	public void setToPlayer(int No){
@@ -42,8 +44,6 @@ public class PlayerContorller : MonoBehaviour {
 			PlayerNumber = 2;
 			break;
 		default:
-			this.Player = GameObject.Find ("Knight");
-			PlayerNumber = 1;
 			break;
 		}
 	}

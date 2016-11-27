@@ -29,7 +29,7 @@ public class DamageScript : MonoBehaviour {
 		if (EnemyHarm && other.tag == ("Enemy")) {
 			other.gameObject.GetComponent<StatusScript> ().Damage ();
 			other.gameObject.GetComponent<StatusScript> ().GetDamage (Random.Range (Damage - OffSet, Damage + OffSet));
-			if (BelongTo != null)
+			if (BelongTo != null && other.gameObject.GetComponent<EnemyMovement> () != null)
 				other.gameObject.GetComponent<EnemyMovement> ().changeTargetPlayer (BelongTo);
 		}
 		if (PlayerHarm && other.tag == ("Player")) {

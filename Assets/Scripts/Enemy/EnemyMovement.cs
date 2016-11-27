@@ -12,7 +12,14 @@ public class EnemyMovement : MonoBehaviour {
 	StatusScript enemyHP;        // Reference to this enemy's health.
 	NavMeshAgent nav;               // Reference to the nav mesh agent.
 
-	public float SearchRange;
+	public float SearchRange = Mathf.Infinity;
+
+	public float StopRange = 1;
+
+	public GameObject Player
+	{
+		get{return player;}
+	}
 
 	void Awake ()
 	{
@@ -33,7 +40,7 @@ public class EnemyMovement : MonoBehaviour {
 
 	void moveToPlayer()
 	{
-		if (player != null) {
+		if (player != null && !SearchObject.CheckObjectinRange(this.transform,Player.transform,StopRange)) {
 			playerHP = player.GetComponent <StatusScript> ();
 			if (enemyHP.HP > 0 && playerHP.HP > 0) {
 				nav.enabled = true;

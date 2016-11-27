@@ -16,9 +16,9 @@ public class StatusScript : MonoBehaviour {
 
 	public bool IsDamaged;
 
+	public bool isDead;
 
-
-	private bool isDead;
+	public float DestroyTime = 1.5f;
 
 	private Image HealthBar;
 
@@ -93,9 +93,11 @@ public class StatusScript : MonoBehaviour {
 		isDead = true;
 		myAnimator.SetTrigger ("IsDead");
 		//未使用
-//		if (gameObject.tag == "Player")
-//			this.GetComponent<PlayerMoveScript>().moveable = false;
+		if (gameObject.tag == "Player") {
+			if (!gameObject.GetComponent<PlayerMoveScript> ().AIMode)
+				GameManagerController.Instance.changePlayer ();
+		}
 //		if (gameObject.tag == "Enemy")
-			Destroy (gameObject, 1.5f);
+		Destroy (gameObject, DestroyTime);
 	}
 }

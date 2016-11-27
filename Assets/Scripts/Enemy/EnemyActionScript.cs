@@ -48,12 +48,8 @@ public class EnemyActionScript : MonoBehaviour {
 
 	void findPlayer()
 	{
-		if (player == null) {
-			player = SearchObject.GetClosestObject (this.gameObject, GameObject.FindGameObjectsWithTag ("Player"), SearchRange);
-			playerHealth = (player != null) ? player.GetComponent<StatusScript> () : null;
-		} else {
-			player = (SearchObject.CheckObjectinRange (this.transform, player.transform, SearchRange)) ? player : null;
-		}
+		player = GetComponent<EnemyMovement>().Player;
+		playerHealth = (player != null) ? player.GetComponent<StatusScript> () : null;
 	}
 
 	void Attack ()
@@ -61,24 +57,18 @@ public class EnemyActionScript : MonoBehaviour {
 		// Add the time since Update was last called to the timer.
 		timer += Time.deltaTime;
 
-		// If the timer exceeds the time between attacks, the player is in range and this enemy is alive...
-		if (timer >= timeBetweenAttacks && enemyHealth.HP > 0) {
-			// Reset the timer.
-			timer = 0f;
+		if (player != null && playerHealth != null) {
+			// If the timer exceeds the time between attacks, the player is in range and this enemy is alive...
+			if (timer >= timeBetweenAttacks && enemyHealth.HP > 0 && SearchObject.CheckObjectinRange (this.transform, player.transform, SearchRange)) {
+				// Reset the timer.
+				timer = 0f;
 
-			// If the player has health to lose...
-			if (playerHealth != null) {
 				// ... damage the player.
-				//playerHealth.GetDamage (GetComponent<StatusScript>().Attack);
 				if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Idle")
 				    || this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Walk")) {
 					this.myAnimator.SetBool ("IsAttack", true);
 					this.EnemyMove.moveable = false;
-
-					GameObject nearestObject = SearchObject.GetClosetTagObject (this.transform, "Player", SearchRange);
-					if (nearestObject != null) {
-						this.transform.LookAt (nearestObject.transform);
-					}
+					this.transform.LookAt (player.transform);
 				}
 			}
 		}

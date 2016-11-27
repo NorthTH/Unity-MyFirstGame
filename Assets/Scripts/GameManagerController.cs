@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameManagerController : MonoBehaviour {
+public class GameManagerController : SingletonMonoBehaviour<GameManagerController> {
 	public GameObject Camera;
 	public GameObject Controller;
 	public int PlayerNo = 1;
@@ -23,7 +23,7 @@ public class GameManagerController : MonoBehaviour {
 			Controller.GetComponent<PlayerContorller> ().setToPlayer (PlayerNo);
 		} 
 		else {
-			
+			GameOver ();
 		}
 	}
 
@@ -60,5 +60,15 @@ public class GameManagerController : MonoBehaviour {
 			}
 			break;
 		}
+	}
+		
+	private void GameOver()
+	{
+		;
+	}
+
+	public void changePlayer()
+	{
+		PlayerNo = (PlayerNo == 1) ? 2 : 1;
 	}
 }

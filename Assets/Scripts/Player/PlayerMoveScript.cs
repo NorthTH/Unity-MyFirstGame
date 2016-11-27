@@ -92,7 +92,8 @@ public class PlayerMoveScript : MonoBehaviour {
 
 	void moveToPlayer()
 	{
-		if (FollowPlayer != null && ThisPlayerHP.HP >0) {
+		if (FollowPlayer != null && ThisPlayerHP.HP >0 && !this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Attack")) {
+			//transform.LookAt (FollowPlayer.transform);
 			TargetPlayerHP = FollowPlayer.GetComponent <StatusScript> ();
 			if (!SearchObject.CheckObjectinRange (this.transform, FollowPlayer.transform, Range)) {
 				nav.enabled = true;
