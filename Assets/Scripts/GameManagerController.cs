@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class GameManagerController : SingletonMonoBehaviour<GameManagerController> {
@@ -6,6 +7,10 @@ public class GameManagerController : SingletonMonoBehaviour<GameManagerControlle
 	public GameObject Controller;
 	public int PlayerNo = 1;
 	public GameObject[] Player;
+
+	public GameObject[] PlayerHP;
+
+	private bool gameover = false;
 
 	private int maxPlayer = 0;
 
@@ -16,7 +21,7 @@ public class GameManagerController : SingletonMonoBehaviour<GameManagerControlle
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		if (checkPlayer ()) {
 			setPlayerNo ();
 			Camera.GetComponent<ThirdPersonCamera> ().setToPlayer (PlayerNo);
@@ -29,7 +34,7 @@ public class GameManagerController : SingletonMonoBehaviour<GameManagerControlle
 
 	bool checkPlayer()
 	{
-		if (GameObject.FindGameObjectsWithTag ("Player") != null) {
+		if (PlayerHP [0].GetComponent<Image> ().fillAmount > 0 || PlayerHP [1].GetComponent<Image> ().fillAmount > 0) {
 			return true;
 		}
 		else
@@ -64,11 +69,21 @@ public class GameManagerController : SingletonMonoBehaviour<GameManagerControlle
 		
 	private void GameOver()
 	{
-		;
+		gameover = true;
 	}
 
 	public void changePlayer()
 	{
 		PlayerNo = (PlayerNo == 1) ? 2 : 1;
+	}
+
+	public int  GetPlayerNo()
+	{
+		return PlayerNo;
+	}
+
+	public bool chackGameOver()
+	{
+		return gameover;
 	}
 }

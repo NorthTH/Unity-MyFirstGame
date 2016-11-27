@@ -32,9 +32,11 @@ public class EnemyMovement : MonoBehaviour {
 
 	void Update ()
 	{
-		findPlayer ();
-		if (moveable) {
-			moveToPlayer ();
+		if (!GameManagerController.Instance.chackGameOver ()) {
+			findPlayer ();
+			if (moveable) {
+				moveToPlayer ();
+			}
 		}
 	} 
 

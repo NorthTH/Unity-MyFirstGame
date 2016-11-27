@@ -14,6 +14,8 @@ public class EnemyActionScript : MonoBehaviour {
 
 	private StatusScript Status;
 
+	private AudioSource audio;
+
 	public GameObject Atk;
 
 	public Transform AttackSpawn;
@@ -32,6 +34,7 @@ public class EnemyActionScript : MonoBehaviour {
 		myAnimator = GetComponent <Animator> ();
 		EnemyMove = GetComponent<EnemyMovement> ();
 		this.Status = GetComponent<StatusScript> ();
+		audio = GetComponent<AudioSource> ();
 	}
 
 	void Update ()
@@ -101,5 +104,6 @@ public class EnemyActionScript : MonoBehaviour {
 	{
 		GameObject AtkObject = (GameObject) Instantiate (Atk, AttackSpawn.position, AttackSpawn.rotation);
 		AtkObject.transform.GetComponent<DamageScript> ().Damage = Status.Attack;
+		audio.Play ();
 	}
 }

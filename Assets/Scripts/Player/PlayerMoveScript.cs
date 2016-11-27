@@ -47,10 +47,10 @@ public class PlayerMoveScript : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void FixedUpdate () {
+	void Update () {
 		idleIni ();
 		//プレイヤー移可能を確認
-		if (moveable) {
+		if (moveable && !GameManagerController.Instance.chackGameOver()) {
 			if (!AIMode)
 				walk ();
 			else {

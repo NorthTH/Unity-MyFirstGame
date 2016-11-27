@@ -12,6 +12,8 @@ public class StatusController : MonoBehaviour {
 	public GameObject MPBar;
 	public GameObject MPText;
 
+	public GameObject Image;
+
 	// Use this for initialization
 	void Start () {
 
@@ -39,6 +41,7 @@ public class StatusController : MonoBehaviour {
 			iMP.fillAmount = (float)mp / (float)maxMp;
 			Text tMP = MPText.GetComponent<Text> ();
 			tMP.text = "MP : " + mp + "/" + maxMp;
-		}
+		} else
+			Destroy (Image.gameObject);
 	}
 }

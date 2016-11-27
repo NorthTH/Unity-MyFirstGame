@@ -18,7 +18,9 @@ public class AutoCreatePrefabs : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		CreatePrefabs ();
+		if (!GameManagerController.Instance.chackGameOver ()) {
+			CreatePrefabs ();
+		}
 	}
 
 	private void CreatePrefabs()

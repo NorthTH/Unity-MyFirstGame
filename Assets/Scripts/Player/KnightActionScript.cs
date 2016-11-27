@@ -51,7 +51,6 @@ public class KnightActionScript : MonoBehaviour {
 		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Idle")
 		    || this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Walk")) {
 			this.myAnimator.SetBool ("IsAttack", true);
-			this.PlayerMove.moveable = false;
 
 			GameObject nearestObject = SearchObject.GetClosetTagObject (this.transform, "Enemy", Range);
 			if (nearestObject != null) {
@@ -79,6 +78,7 @@ public class KnightActionScript : MonoBehaviour {
 	private void AttackStart(){
 		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Attack")) {
 			IsAttacking = true;
+			this.PlayerMove.moveable = false;
 			if (this.myAnimator.GetBool ("IsAttack"))
 				Invoke("CallSlash", 0.0f);
 			this.myAnimator.SetBool ("IsAttack", false);

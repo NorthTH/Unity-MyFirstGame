@@ -10,6 +10,8 @@ public class WizardActionScript : MonoBehaviour {
 
 	private float Range = 7.0f;
 
+	private AudioSource audio;
+
 	private StatusScript Status;
 
 	public bool IsAttacking;
@@ -36,6 +38,8 @@ public class WizardActionScript : MonoBehaviour {
 		this.PlayerMove = GetComponent<PlayerMoveScript> ();
 
 		IsAttacking = false;
+
+		audio = GetComponent<AudioSource> ();
 	}
 
 	// Update is called once per frame
@@ -51,7 +55,6 @@ public class WizardActionScript : MonoBehaviour {
 		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Idle")
 			|| this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Walk")) {
 			this.myAnimator.SetBool ("IsAttack", true);
-			this.PlayerMove.moveable = false;
 
 			GameObject nearestObject = SearchObject.GetClosetTagObject (this.transform, "Enemy", Range);
 			if (nearestObject != null) {
@@ -68,6 +71,7 @@ public class WizardActionScript : MonoBehaviour {
 		GameObject FireblotObject = (GameObject) Instantiate (Fireblot, FireblotSpawn.position, FireblotSpawn.rotation);
 		FireblotObject.GetComponent<DamageScript> ().BelongTo = this.gameObject;
 		FireblotObject.GetComponent<DamageScript> ().Damage = Status.Attack;
+		audio.Play ();
 	}
 
 	//攻撃中確認
@@ -79,8 +83,10 @@ public class WizardActionScript : MonoBehaviour {
 	private void AttackStart(){
 		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Attack")) {
 			IsAttacking = true;
-			if (this.myAnimator.GetBool ("IsAttack")) 
-				Invoke("CallFireblot", 0.4f);
+			this.PlayerMove.moveable = false;
+			if (this.myAnimator.GetBool ("IsAttack")) {
+				Invoke ("CallFireblot", 0.4f);
+			}
 			this.myAnimator.SetBool ("IsAttack", false);
 		}
 	}
