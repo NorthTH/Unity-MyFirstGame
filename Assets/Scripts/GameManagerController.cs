@@ -77,6 +77,16 @@ public class GameManagerController : SingletonMonoBehaviour<GameManagerControlle
 		PlayerNo = (PlayerNo == 1) ? 2 : 1;
 	}
 
+	public void changeToPlayer1()
+	{
+		PlayerNo = 1;
+	}
+
+	public void changeToPlayer2()
+	{
+		PlayerNo = 2;
+	}
+
 	public int  GetPlayerNo()
 	{
 		return PlayerNo;

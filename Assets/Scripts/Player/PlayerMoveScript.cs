@@ -72,6 +72,8 @@ public class PlayerMoveScript : MonoBehaviour {
 
 	private void walk()
 	{
+		nav.enabled = false;
+
 		Speed = (Speed < MaxSpeed) ? Speed : MaxSpeed;
 		//歩くアニメーションを開始
 		this.myAnimator.SetFloat ("Speed", (this.Speed <= 0) ? 0 : this.Speed);
