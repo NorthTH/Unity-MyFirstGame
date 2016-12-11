@@ -12,6 +12,8 @@ public class GameManagerController : SingletonMonoBehaviour<GameManagerControlle
 
 	private bool gameover = false;
 
+	private bool IsVictory = false;
+
 	private int maxPlayer = 0;
 
 	enum Players {knight =1, wizard=2}; 
@@ -22,12 +24,16 @@ public class GameManagerController : SingletonMonoBehaviour<GameManagerControlle
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		
 		if (checkPlayer ()) {
+			if (IsVictory) {
+				Victory ();
+			}
 			setPlayerNo ();
 			Camera.GetComponent<ThirdPersonCamera> ().setToPlayer (PlayerNo);
 			Controller.GetComponent<PlayerContorller> ().setToPlayer (PlayerNo);
 		} 
-		else {
+		else{
 			GameOver ();
 		}
 	}
@@ -66,10 +72,28 @@ public class GameManagerController : SingletonMonoBehaviour<GameManagerControlle
 			break;
 		}
 	}
+
+	public void SetVictory()
+	{
+		IsVictory = true;
+	}
+
+	private void Victory()
+	{
+		var enemys = GameObject.FindGameObjectsWithTag ("Enemy");
+
+		foreach (GameObject enemy in enemys) {
+			Destroy (enemy.gameObject);
+		}
+
+		GameObject.Find("GameOverText").GetComponent<Text>().text = "You Are Win!!";
+	}
 		
 	private void GameOver()
 	{
 		gameover = true;
+
+		GameObject.Find("GameOverText").GetComponent<Text>().text = "Game Over";
 	}
 
 	public void changePlayer()

@@ -78,7 +78,6 @@ public class KnightActionScript : MonoBehaviour {
 	private void AttackStart(){
 		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Attack")) {
 			IsAttacking = true;
-			this.PlayerMove.moveable = false;
 			if (this.myAnimator.GetBool ("IsAttack"))
 				Invoke("CallSlash", 0.0f);
 			this.myAnimator.SetBool ("IsAttack", false);
@@ -92,7 +91,6 @@ public class KnightActionScript : MonoBehaviour {
 			//Debug.Log (this.myAnimator.GetCurrentAnimatorStateInfo (0).normalizedTime);
 			if(this.myAnimator.GetCurrentAnimatorStateInfo (0).normalizedTime >= 0.90f)
 			{
-				this.PlayerMove.moveable = true;
 				IsAttacking = false;
 			}
 		}

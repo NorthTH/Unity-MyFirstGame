@@ -83,7 +83,6 @@ public class WizardActionScript : MonoBehaviour {
 	private void AttackStart(){
 		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Attack")) {
 			IsAttacking = true;
-			this.PlayerMove.moveable = false;
 			if (this.myAnimator.GetBool ("IsAttack")) {
 				Invoke ("CallFireblot", 0.4f);
 			}
@@ -98,7 +97,6 @@ public class WizardActionScript : MonoBehaviour {
 			//Debug.Log (this.myAnimator.GetCurrentAnimatorStateInfo (0).normalizedTime);
 			if(this.myAnimator.GetCurrentAnimatorStateInfo (0).normalizedTime >= 0.90f)
 			{
-				this.PlayerMove.moveable = true;
 				IsAttacking = false;
 			}
 		}

@@ -12,7 +12,7 @@ public class PlayerMoveScript : MonoBehaviour {
 	//前進するための力
 	public float Speed = 0.0f;
 	//プレイヤー移動許可フラク
-	public bool moveable;
+	private bool moveable;
 
 	public bool AIMode;
 
@@ -47,7 +47,7 @@ public class PlayerMoveScript : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		idleIni ();
 		//プレイヤー移可能を確認
 		if (moveable && !GameManagerController.Instance.chackGameOver()) {
@@ -68,6 +68,9 @@ public class PlayerMoveScript : MonoBehaviour {
 		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Idle")
 		    || this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Walk"))
 			moveable = true;
+		else {
+			moveable = false;
+		}
 	}
 
 	private void walk()

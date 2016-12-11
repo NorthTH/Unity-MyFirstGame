@@ -5,7 +5,7 @@ public class EnemyMovement : MonoBehaviour {
 
 	private Animator myAnimator;
 
-	public bool moveable;
+	private bool moveable;
 
 	GameObject player;               // Reference to the player's position.
 	StatusScript playerHP;      // Reference to the player's health.
@@ -34,11 +34,26 @@ public class EnemyMovement : MonoBehaviour {
 	{
 		if (!GameManagerController.Instance.chackGameOver ()) {
 			findPlayer ();
+			SetMoveable ();
 			if (moveable) {
 				moveToPlayer ();
+			} else {
+				nav.enabled = false;
 			}
+		} else {
+			nav.enabled = false;
 		}
-	} 
+	}
+
+	void SetMoveable()
+	{
+		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Idle")
+		    || this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Walk")) {
+			moveable = true;
+		} else {
+			moveable = false;
+		}
+	}
 
 	void moveToPlayer()
 	{

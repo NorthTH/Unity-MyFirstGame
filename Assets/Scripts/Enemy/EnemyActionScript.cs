@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyActionScript : MonoBehaviour {
 
 	//アニメーションするためのコンポーネントを入れる
-	private Animator myAnimator;
+	protected Animator myAnimator;
 	private EnemyMovement EnemyMove;
 	GameObject player;                         
 	StatusScript playerHealth;                  // Reference to the player's health.
@@ -70,7 +70,6 @@ public class EnemyActionScript : MonoBehaviour {
 				if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Idle")
 				    || this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Walk")) {
 					this.myAnimator.SetBool ("IsAttack", true);
-					this.EnemyMove.moveable = false;
 					this.transform.LookAt (player.transform);
 				}
 			}
@@ -78,7 +77,7 @@ public class EnemyActionScript : MonoBehaviour {
 	}
 
 	//攻撃スタート
-	private void AttackStart(){
+	protected virtual void AttackStart(){
 		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Attack")) {
 			IsAttacking = true;
 			if (this.myAnimator.GetBool ("IsAttack"))
@@ -88,13 +87,12 @@ public class EnemyActionScript : MonoBehaviour {
 	}
 
 	//攻撃終了
-	private void AttackEnd(){
+	protected virtual void AttackEnd(){
 		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Attack"))
 		{
 			//Debug.Log (this.myAnimator.GetCurrentAnimatorStateInfo (0).normalizedTime);
 			if(this.myAnimator.GetCurrentAnimatorStateInfo (0).normalizedTime >= 0.90f)
 			{
-				this.EnemyMove.moveable = true;
 				IsAttacking = false;
 			}
 		}

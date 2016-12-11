@@ -37,7 +37,7 @@ public class StatusScript : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	protected virtual void Update () {
 		if (HP <= 0 && !isDead) {
 			Die ();
 		}
@@ -92,7 +92,7 @@ public class StatusScript : MonoBehaviour {
 	private void Die(){
 		isDead = true;
 		myAnimator.SetTrigger ("IsDead");
-		//未使用
+
 		if (gameObject.tag == "Player") {
 			if (!gameObject.GetComponent<PlayerMoveScript> ().AIMode)
 				GameManagerController.Instance.changePlayer ();
