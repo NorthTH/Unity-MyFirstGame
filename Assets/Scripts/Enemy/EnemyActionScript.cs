@@ -5,16 +5,16 @@ public class EnemyActionScript : MonoBehaviour {
 
 	//アニメーションするためのコンポーネントを入れる
 	protected Animator myAnimator;
-	private EnemyMovement EnemyMove;
-	GameObject player;                         
-	StatusScript playerHealth;                  // Reference to the player's health.
-	StatusScript enemyHealth;                    // Reference to this enemy's health.
-	bool playerInRange;                         // Whether player is within the trigger collider and can be attacked.
-	float timer;
+	protected EnemyMovement EnemyMove;
+	protected GameObject player;                         
+	protected StatusScript playerHealth;                  // Reference to the player's health.
+	protected StatusScript enemyHealth;                    // Reference to this enemy's health.
+	protected bool playerInRange;                         // Whether player is within the trigger collider and can be attacked.
+	protected float timer;
 
-	private StatusScript Status;
+	protected StatusScript Status;
 
-	private AudioSource audio;
+	protected AudioSource audio;
 
 	public GameObject Atk;
 
@@ -49,13 +49,13 @@ public class EnemyActionScript : MonoBehaviour {
 		AttackEnd ();
 	}
 
-	void findPlayer()
+	protected virtual void findPlayer()
 	{
 		player = GetComponent<EnemyMovement>().Player;
 		playerHealth = (player != null) ? player.GetComponent<StatusScript> () : null;
 	}
 
-	void Attack ()
+	protected virtual void Attack ()
 	{
 		// Add the time since Update was last called to the timer.
 		timer += Time.deltaTime;
@@ -98,7 +98,7 @@ public class EnemyActionScript : MonoBehaviour {
 		}
 	}
 
-	private void CallAttack()
+	protected virtual void CallAttack()
 	{
 		GameObject AtkObject = (GameObject) Instantiate (Atk, AttackSpawn.position, AttackSpawn.rotation);
 		AtkObject.transform.GetComponent<DamageScript> ().Damage = Status.Attack;

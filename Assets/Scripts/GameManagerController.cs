@@ -19,8 +19,10 @@ public class GameManagerController : SingletonMonoBehaviour<GameManagerControlle
 	enum Players {knight =1, wizard=2}; 
 	// Use this for initialization
 	void Start () {
-	
+		Destroy (GameObject.Find ("VictoryConditionText"), 5.0f);
 	}
+
+
 	
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -83,7 +85,7 @@ public class GameManagerController : SingletonMonoBehaviour<GameManagerControlle
 		var enemys = GameObject.FindGameObjectsWithTag ("Enemy");
 
 		foreach (GameObject enemy in enemys) {
-			Destroy (enemy.gameObject);
+			Destroy (enemy.gameObject, 1.5f);
 		}
 
 		GameObject.Find("GameOverText").GetComponent<Text>().text = "You Are Win!!";
