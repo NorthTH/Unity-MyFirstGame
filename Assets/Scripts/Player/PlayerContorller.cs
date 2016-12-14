@@ -10,7 +10,7 @@ public class PlayerContorller : MonoBehaviour {
 	private Vector2 direction;
 	private Vector2 endPos;
 
-	//private float clickTime;
+	private float clickTime;
 	private float distance;
 
 	private float offset = 90.0f;
@@ -18,7 +18,7 @@ public class PlayerContorller : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		setToPlayer (PlayerNumber);
-		//clickTime = 0.0f;
+		clickTime = 0.0f;
 	}
 	
 	// Update is called once per frame
@@ -57,8 +57,9 @@ public class PlayerContorller : MonoBehaviour {
 		endPos = new Vector2 (Input.mousePosition.x, Input.mousePosition.y);
 		Player.GetComponent<PlayerMoveScript> ().Speed = 0.0f;
 
+		if (clickTime <= 0.5f) {
 		//ドラックがしないこと確認し攻撃行う。
-		if (distance == 0.0f) {
+		//if (distance <= 2.0f) {
 			switch (PlayerNumber) {
 			case 1:
 				Player.GetComponent<KnightActionScript> ().Attack ();
@@ -69,18 +70,17 @@ public class PlayerContorller : MonoBehaviour {
 			}
 		}
 		//値リセット
-		//clickTime = 0.0f;
+		clickTime = 0.0f;
 		distance = 0.0f;
 	}
 
 	private void TrackingClick(){
-		//clickTime += Time.deltaTime;
+		clickTime += Time.deltaTime;
 		Vector2 currentPos = new Vector2 (Input.mousePosition.x, Input.mousePosition.y);
 
 		distance = Vector2.Distance (currentPos, startPos) / 50.0f;
-		Player.GetComponent<PlayerMoveScript> ().Speed = distance;
-
-		if (distance != 0.0f) {
+		if (distance >= 1.5f) {
+			Player.GetComponent<PlayerMoveScript> ().Speed = distance;
 			direction = currentPos - startPos;
 			float sign = (currentPos.y < startPos.y) ? -1.0f : 1.0f;
 			float angle = (Vector2.Angle (Vector2.left, direction) * sign) - offset + Camera.main.transform.eulerAngles.y;

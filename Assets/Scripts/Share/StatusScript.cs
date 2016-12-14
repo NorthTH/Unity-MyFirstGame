@@ -20,11 +20,11 @@ public class StatusScript : MonoBehaviour {
 
 	public float DestroyTime = 1.5f;
 
-	private Image HealthBar;
+	protected Image HealthBar;
 
-	private Canvas StatusCanvas;
+	protected Canvas StatusCanvas;
 
-	private Animator myAnimator;
+	protected Animator myAnimator;
 
 	// Use this for initialization
 	void Start () {
@@ -70,7 +70,7 @@ public class StatusScript : MonoBehaviour {
 	}
 
 	//
-	private void DamageStart(){
+	protected void DamageStart(){
 		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Damage")) {
 			IsDamaged = true;
 			this.myAnimator.SetBool ("IsDamage", false);
@@ -78,7 +78,7 @@ public class StatusScript : MonoBehaviour {
 	}
 
 	//攻撃終了
-	private void DamageEnd(){
+	protected void DamageEnd(){
 		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Damage"))
 		{
 			//Debug.Log (this.myAnimator.GetCurrentAnimatorStateInfo (0).normalizedTime);
@@ -89,7 +89,7 @@ public class StatusScript : MonoBehaviour {
 		}
 	}
 
-	private void Die(){
+	protected virtual void Die(){
 		isDead = true;
 		myAnimator.SetTrigger ("IsDead");
 
@@ -97,7 +97,9 @@ public class StatusScript : MonoBehaviour {
 			if (!gameObject.GetComponent<PlayerMoveScript> ().AIMode)
 				GameManagerController.Instance.changePlayer ();
 		}
-//		if (gameObject.tag == "Enemy")
+		if (gameObject.tag == "Enemy") {
+			GetComponent<DropItems> ().DropItem ();
+		}
 		Destroy (gameObject, DestroyTime);
 	}
 }
