@@ -19,6 +19,7 @@ public class MonsterManagerScript : MonoBehaviour {
 		NowGreenSlime = 0;
 		NowBlueSlime = 0;
 		NowBlueGoblin = 0;
+		Globals.monsterManager = this.gameObject;
 	}
 		
 	public void addGreenSlime ()

@@ -9,7 +9,7 @@ public class AutoCreatePrefabs : MonoBehaviour {
 
 	public float time = 5;
 
-	private float timer;
+	protected float timer;
 
 	// Use this for initialization
 	void Start () {
@@ -23,7 +23,7 @@ public class AutoCreatePrefabs : MonoBehaviour {
 		}
 	}
 
-	private void CreatePrefabs()
+	protected virtual void CreatePrefabs()
 	{
 		timer += Time.deltaTime;
 
